@@ -1,6 +1,7 @@
 {
   "pages": [
     "index",
+    "gallery",
     "installation",
     "guide",
     "fill-blank",

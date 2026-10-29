@@ -78,10 +78,16 @@ export default function Home() {
 
           <div className="mt-10 flex gap-3 flex-wrap max-sm:flex-col max-sm:items-stretch">
             <a
-              href="/docs"
+              href="/docs/gallery"
               className="inline-flex items-center gap-2 px-5 py-[10px] bg-[#e8e8e8] text-[#0a0a0a] text-[0.75rem] font-medium tracking-[0.04em] no-underline border-none cursor-pointer transition-opacity hover:opacity-85 whitespace-nowrap max-sm:justify-center max-sm:w-full"
             >
-              Read the docs →
+              See the components →
+            </a>
+            <a
+              href="/docs"
+              className="inline-flex items-center gap-2 px-5 py-[10px] bg-transparent text-[#666] text-[0.75rem] tracking-[0.04em] no-underline border border-[#2e2e2e] transition-colors hover:text-[#e8e8e8] hover:border-[#444] whitespace-nowrap max-sm:justify-center max-sm:w-full"
+            >
+              Read the docs
             </a>
             <a
               href="/docs/installation"

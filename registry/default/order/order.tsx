@@ -59,10 +59,25 @@ export interface OrderProps {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function shuffleArray<T>(arr: T[]): T[] {
+function hashSeed(value: string): number {
+  let h = 2166136261
+  for (let i = 0; i < value.length; i++) {
+    h ^= value.charCodeAt(i)
+    h = Math.imul(h, 16777619)
+  }
+  return h >>> 0 || 1
+}
+
+/** Seeded shuffle matches on the server and client. Omit the seed to reshuffle. */
+function shuffleArray<T>(arr: T[], seed?: string): T[] {
   const a = [...arr]
+  let s = seed ? hashSeed(seed) : (Math.floor(Math.random() * 0xffffffff) || 1)
+  const rand = () => {
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0
+    return s / 4294967296
+  }
   for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
+    const j = Math.floor(rand() * (i + 1))
     ;[a[i], a[j]] = [a[j], a[i]]
   }
   return a
@@ -81,13 +96,13 @@ export function Order({ orderData, onComplete, className }: OrderProps) {
   const question = questions[index]
 
   const [items, setItems] = useState<OrderItem[]>(() =>
-    shuffleArray(question.items)
+    shuffleArray(question.items, question.id)
   )
 
   const progress = (index / questions.length) * 100
 
   React.useEffect(() => {
-    setItems(shuffleArray(question.items))
+    setItems(shuffleArray(question.items, question.id))
     setSubmitted(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index])

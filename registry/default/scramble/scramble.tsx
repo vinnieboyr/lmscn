@@ -53,21 +53,36 @@ interface LetterTile {
   char: string
 }
 
-function buildScrambled(word: string): LetterTile[] {
+function hashSeed(value: string): number {
+  let h = 2166136261
+  for (let i = 0; i < value.length; i++) {
+    h ^= value.charCodeAt(i)
+    h = Math.imul(h, 16777619)
+  }
+  return h >>> 0 || 1
+}
+
+function buildScrambled(word: string, seed: string): LetterTile[] {
   const tiles: LetterTile[] = word.split("").map((char, i) => ({
-    id: `${i}-${char}-${Math.random()}`,
+    id: `${i}-${char}`,
     char,
   }))
-  let shuffled = [...tiles]
-  do {
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-    }
-  } while (
+  let s = hashSeed(`${seed}:${word}`)
+  const rand = () => {
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0
+    return s / 4294967296
+  }
+  const shuffled = [...tiles]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  if (
     shuffled.map((t) => t.char).join("") === word &&
     word.length > 1
-  )
+  ) {
+    shuffled.push(shuffled.shift()!)
+  }
   return shuffled
 }
 
@@ -89,7 +104,7 @@ export function Scramble({
   const answerLetters = question.answer.replace(/\s/g, "")
 
   const [pool, setPool] = useState<LetterTile[]>(() =>
-    buildScrambled(answerLetters)
+    buildScrambled(answerLetters, question.id)
   )
   const [selected, setSelected] = useState<LetterTile[]>([])
 
@@ -99,7 +114,9 @@ export function Scramble({
     userWord.toLowerCase() === answerLetters.toLowerCase()
 
   React.useEffect(() => {
-    setPool(buildScrambled(question.answer.replace(/\s/g, "")))
+    setPool(
+      buildScrambled(question.answer.replace(/\s/g, ""), question.id)
+    )
     setSelected([])
     setSubmitted(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps

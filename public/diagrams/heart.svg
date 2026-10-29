@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-label="Diagram of the human heart">
+  <rect width="800" height="500" fill="#fafafa"/>
+  <ellipse cx="240" cy="100" rx="150" ry="78" fill="#fecaca" stroke="#b91c1c" stroke-width="3"/>
+  <ellipse cx="480" cy="100" rx="150" ry="78" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="3"/>
+  <ellipse cx="240" cy="200" rx="165" ry="95" fill="#f87171" stroke="#991b1b" stroke-width="3"/>
+  <ellipse cx="480" cy="200" rx="165" ry="95" fill="#60a5fa" stroke="#1e3a8a" stroke-width="3"/>
+  <path d="M400 70 C400 150 400 250 400 310" stroke="#71717a" stroke-width="2" stroke-dasharray="6 6" fill="none"/>
+  <text x="400" y="430" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="16" fill="#71717a">Click each marker and name the chamber</text>
+</svg>
